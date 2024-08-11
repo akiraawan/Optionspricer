@@ -17,7 +17,7 @@ class BSMFormulae:
         self.S0 = S0
         self.K = K
         self.r = r
-        self.T = T
+        self.T = float(T)/365
         self.sigma = sigma
         self.type = type
         self.price = self.price()
