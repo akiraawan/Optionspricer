@@ -31,4 +31,4 @@ $$
 
 and we have the cumulative distribution function
 
-$$ N(x) = \frac 1{\sqrt {2\pi}} \int_{-\infty}^x e^{-\tfrac 12 s^2}\;\text ds$$
+$$ N(x) = \frac 1{\sqrt {2\pi}} \int_{-\infty}^x e^{-\tfrac 12 s^2}\text ds$$
