@@ -14,19 +14,28 @@ class BinomialTree:
         self.dt = T/steps
         self.u = np.exp(self.sigma * np.sqrt(self.dt/steps))
         self.d = 1/self.u
+        if q is not None:
+            self.p = (np.exp((self.r-self.q)*self.dt) - self.d) / (self.u - self.d)
+        else:
+            self.p = (np.exp(self.r*self.dt) - self.d) / (self.u - self.d)
         
 
     def price(self):
         stock_tree = np.zeros((self.steps+1, self.steps+1))
-        for i in range(self.steps+1):
-            for j in range(i+1):
-                stock_tree[j, i] = self.S0 * (self.u ** j) * (self.d ** (i-j))
+        for j in range(self.steps+1):
+            for i in range(i+1):
+                stock_tree[i, j] = self.S0 * (self.u ** (j-i)) * (self.d ** (i))
         
         option_tree = np.zeros((self.steps+1, self.steps+1))
-        for j in range(self.steps+1):
-            option_tree[j, self.steps] = max(0, option_tree[j, self.steps] - self.K) if (self.type == 'call') else max(0, self.K - option_tree[j, self.steps])
+        for i in range(self.steps+1):
+            option_tree[i, self.steps] = max(0, option_tree[i, self.steps] - self.K) if (self.type == 'call') else max(0, self.K - option_tree[i, self.steps])
 
-        for 
+        for j in range(self.steps-1, -1, -1):
+            for i in range(i+1):
+                option_tree[i, j] = np.exp(-self.r*self.dt) * (self.p * option_tree[i, j+1] + (1-self.p) * option_tree[i+1, j+1])
+
+        self.price = option_tree[0, 0]
+        
 
     def delta(self):
         pass
