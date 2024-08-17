@@ -18,7 +18,6 @@ class BinomialTree:
             self.p = (np.exp((self.r-self.q)*self.dt) - self.d) / (self.u - self.d)
         else:
             self.p = (np.exp(self.r*self.dt) - self.d) / (self.u - self.d)
-        self.price = self._price()
         
 
     def _price(self):
