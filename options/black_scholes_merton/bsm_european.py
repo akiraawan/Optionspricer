@@ -1,13 +1,11 @@
 import numpy as np
 from scipy.stats import norm
 
-
-
 class BSMFormulae:
-    ''' 
+    """
     Class to compute the Black-Scholes-Merton formulae for European options.
     Also adjusted for dividend paymenets.
-    '''
+    """
     def __init__(self, S0, K, r, T, sigma, q=0, option_type='call'):
         self.S0 = S0
         self.K = K
@@ -53,4 +51,3 @@ class BSMFormulae:
             return self.K * self.T * np.exp(-self.r * self.T) * norm.cdf(self.d2())
         else:
             return -self.K * self.T * np.exp(-self.r * self.T) * norm.cdf(-self.d2())
-        
