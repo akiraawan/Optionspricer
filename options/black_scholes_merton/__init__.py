@@ -1,1 +1,1 @@
-from .bsm_european import BSMFormulae # noqa F401
+from .bsm_european import BSMFormulae
