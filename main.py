@@ -1,4 +1,4 @@
-from optionspricer import american_pricer, european_pricer
+from options import american_pricer, european_pricer
 
 def test_american_pricer():
     S = 100.0  # Current price of the underlying asset
