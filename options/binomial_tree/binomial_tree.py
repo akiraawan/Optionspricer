@@ -4,6 +4,26 @@ import numpy as np
 
 class BinomialTree:
     def __init__(self, S0, K, r, T, sigma, steps, q=0, option_type='call'):
+        """
+        Construct a Binomial Tree for option pricing.
+
+        Parameters
+        ----------
+        S0: float
+            current price of the underlying asset
+        K: float
+            strike price of the option
+        r: float
+            risk-free interest rate
+        sigma: float
+            volatility of the underlying asset
+        T: float
+            time to maturity of the option specified in days
+        steps: int
+            number of steps in the binomial tree
+        q: float
+            dividend yield of the underlying asset
+        """
         self.option_type = option_type
         self.steps = steps
         self.S0 = S0
