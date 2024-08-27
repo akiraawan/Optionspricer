@@ -1,4 +1,4 @@
-# optionspricer
+# options pricer
 
 Define $V$ the derivative price, $S$ the underlying price, $\sigma$ the volatility and $r$ the risk-free rate (e.g. interest), we have the Black-Scholes Equation
 
