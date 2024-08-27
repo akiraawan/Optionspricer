@@ -61,3 +61,6 @@ class BinomialTree:
 
     def rho(self):
         raise NotImplementedError
+
+    def display(self):
+        pass
