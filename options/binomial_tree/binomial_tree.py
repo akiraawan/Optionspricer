@@ -63,4 +63,23 @@ class BinomialTree:
         raise NotImplementedError
 
     def display(self):
+        """
+        Display the option tree and stock tree in the console.
+        """
+        print("Option Tree:")
+        self.__display_tree(self.option_tree)
+
+        print("Stock Tree:")
+        self.__display_tree(self.stock_tree)
+
+    @staticmethod
+    def __display_tree(tree):
+        for i in range(len(tree)):
+            print("\t"*i, end="")
+            print("\t".join(["{0:.2f}".format(i) for i in tree[i][i:]]))
+
+    def visualise(self):
+        """
+        Prints out the graphical representation of the binomial tree.
+        """
         pass
