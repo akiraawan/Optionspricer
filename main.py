@@ -1,5 +1,6 @@
-from options import binomial_tree 
+from options import binomial_tree
 from options import black_scholes_merton
+
 
 def test_american_pricer():
     S = 100.0  # Current price of the underlying asset
@@ -11,6 +12,7 @@ def test_american_pricer():
     q = 0.2  # Dividend yield of the underlying asset
     bt = binomial_tree.BinomialTreeAmerican(S, K, r, T, sigma, steps, q, option_type='call')
     print(bt.price)
+
 
 def test_european_pricer():
     # Option parameters
@@ -29,6 +31,21 @@ def test_european_pricer():
     print(bt.price)
 
 
+def test_visualise_and_display():
+    S = 100.0  # Current price of the underlying asset
+    K = 110.0  # Strike price of the option
+    r = 0.05  # Risk-free interest rate
+    sigma = 0.2  # Volatility of the underlying asset
+    T = 365  # Time to maturity of the option specified in days
+    steps = 5
+    q = 0.2  # Dividend yield of the underlying asset
+    bt = binomial_tree.BinomialTreeAmerican(S, K, r, T, sigma, steps, q, option_type='call')
+    print("Price:", bt.price)
+    bt.display()
+    bt.visualise()
+
+
 if __name__ == '__main__':
-    test_american_pricer()
-    test_european_pricer()
+    # test_american_pricer()
+    # test_european_pricer()
+    test_visualise_and_display()
