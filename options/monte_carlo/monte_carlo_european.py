@@ -4,7 +4,7 @@ from scipy.stats import norm
 
 
 class MonteCarlo:
-    def __init__(self, S0, K, r, T, sigma, steps, sims, option_type='call'):
+    def __init__(self, S0, K, r, T, sigma, steps, sims, q=0, option_type='call'):
         """
         Construct a Monte Carlo Simulation for european option pricing.
 
@@ -32,6 +32,7 @@ class MonteCarlo:
         self.sigma = sigma
         self.steps = steps
         self.sims = sims
+        self.q = q
         self.option_type = option_type
         self.dt = self.T/steps
 
@@ -44,7 +45,7 @@ class MonteCarlo:
         # Generate stock prices
         for t in range(1, self.steps+1): 
             Z = norm.rvs(size=self.sims)
-            self.stock_prices[:, t] = self.stock_prices[:, t-1] * np.exp((self.r - 0.5*self.sigma**2)*self.dt + self.sigma*np.sqrt(self.dt)*Z)
+            self.stock_prices[:, t] = self.stock_prices[:, t-1] * np.exp(((self.r - self.q) - 0.5 * self.sigma**2) * self.dt + self.sigma * np.sqrt(self.dt) * Z)
 
         self.payoffs = np.maximum(0, self.stock_prices[:, -1] - self.K) if (self.option_type == 'call') else np.maximum(0, self.K - self.stock_prices[:, -1])
 
@@ -69,4 +70,3 @@ class MonteCarlo:
 
     def display(self):
         pass
-y
