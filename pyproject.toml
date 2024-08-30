@@ -7,7 +7,9 @@ name = "optionspricer"
 version = "0.1"
 dependencies = [
     "numpy",
-    "scipy"
+    "scipy",
+    "matplotlib",
+    "networkx",
 ]
 
 [tool.hatch.build.targets.wheel]
