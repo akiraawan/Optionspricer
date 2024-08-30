@@ -83,33 +83,37 @@ class BinomialTree:
         """
         Prints out the graphical representation of the binomial tree.
         """
-        def encode(i, j):
-            return f"[{i} {j}]"
-
-        def label(i, j):
-            return f"{round(self.stock_tree[i][j], 2)}\n{round(self.option_tree[i][j], 2)}"
-
         G = nx.DiGraph()
-        n = self.steps + 1
+        n = self.stock_tree.shape[0]
+
         for i in range(n):
             for j in range(i, n):
-                G.add_node(encode(i, j), label=label(i, j))
+                G.add_node((i, j))
 
         for i in range(n-1):
             for j in range(i, n-1):
-                G.add_edge(encode(i, j), encode(i, j+1))
-                G.add_edge(encode(i, j), encode(i+1, j+1))
-                
-        pos = dict()
-        ver_gap = 0.4
-        hor_gap = 1.0
+                G.add_edge((i, j), (i, j+1))
+                G.add_edge((i, j), (i+1, j+1))
+
+        pos = {}
+        layer_gap = 1.5
+        node_gap = 2.0
 
         for i in range(n):
-            level_nodes = [encode(i, j) for j in range(i, n)]
-            for idx, node in enumerate(level_nodes):
-                pos[node] = (idx * hor_gap - (len(level_nodes) - 1) * hor_gap, -i * ver_gap)
+            for j in range(i, n):
+                pos[(i, j)] = (j * node_gap - i * node_gap / 2, -i * layer_gap)
 
-        labels = nx.get_node_attributes(G, 'label')
-        nx.draw(G, pos, with_labels=True, labels=labels, node_size=2000, node_color='lightblue', font_size=10, arrowstyle="-|>", arrowsize=20)
+        plt.figure(figsize=(12, 8))
+        nx.draw(G, pos, with_labels=False, node_size=2000, node_color='lightblue',
+                font_size=10, font_color='black', arrowstyle='-|>', arrowsize=20)
+
+        for (i, j) in G.nodes():
+            x, y = pos[(i, j)]
+            plt.text(x, y + 0.2, f"{self.stock_tree[i, j]:.2f}", fontsize=10, ha='center', va='center', color='red')
+            plt.text(x, y - 0.2, f"{self.option_tree[i, j]:.2f}", fontsize=10, ha='center', va='center', color='blue')
+
+        red_patch = plt.Line2D([0], [0], marker='o', color='w', label='Stock Value', markerfacecolor='red', markersize=10)
+        blue_patch = plt.Line2D([0], [0], marker='o', color='w', label='Option Value', markerfacecolor='blue', markersize=10)
+        plt.legend(handles=[red_patch, blue_patch], loc='lower right')
 
         plt.show()
