@@ -56,7 +56,7 @@ def test_monte_carlo():
     sims = 100000
     q = 0.2  # Dividend yield of the underlying asset
 
-    monte = monte_carlo.MonteCarlo(S, K, r, T, sigma, steps, sims, q)
+    monte = monte_carlo.MonteCarloEuropean(S, K, r, T, sigma, steps, sims, q)
     print(monte.price)
 
 
