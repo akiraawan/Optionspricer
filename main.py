@@ -61,7 +61,4 @@ def test_monte_carlo():
 
 
 if __name__ == '__main__':
-    # test_american_pricer()
-    # test_european_pricer()
-    # test_visualise_and_display()
     test_monte_carlo()
