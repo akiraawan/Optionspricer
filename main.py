@@ -1,5 +1,6 @@
 from options import binomial_tree
 from options import black_scholes_merton
+from options import monte_carlo
 
 
 def test_american_pricer():
@@ -45,7 +46,19 @@ def test_visualise_and_display():
     bt.visualise()
 
 
+def test_monte_carlo():
+    S = 100.0  # Current price of the underlying asset
+    K = 110.0  # Strike price of the option
+    r = 0.05  # Risk-free interest rate
+    sigma = 0.2  # Volatility of the underlying asset
+    T = 365  # Time to maturity of the option specified in days
+    steps = 5
+    sims = 100000
+    q = 0.2  # Dividend yield of the underlying asset
+
+    monte = monte_carlo.MonteCarlo(S, K, r, T, sigma, steps, sims, q)
+    print(monte.price)
+
+
 if __name__ == '__main__':
-    # test_american_pricer()
-    # test_european_pricer()
-    test_visualise_and_display()
+    test_monte_carlo()

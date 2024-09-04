@@ -24,6 +24,8 @@ class MonteCarlo:
             number of steps in the binomial tree
         sims: int
             number of simulations
+        q: float
+            dividend yield of the underlying asset
         """
         self.S0 = S0
         self.K = K
