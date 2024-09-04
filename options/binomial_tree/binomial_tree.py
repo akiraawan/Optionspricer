@@ -40,9 +40,9 @@ class BinomialTree:
         self.p = (np.exp((self.r-self.q)*self.dt) - self.d) / (self.u - self.d)
 
         self.generate_trees()
-        self.price = self._price()
+        self.price = self.get_price()
 
-    def _price(self):
+    def get_price(self):
         return self.option_tree[0, 0]
 
     @abstractmethod
