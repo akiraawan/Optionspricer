@@ -39,11 +39,11 @@ class MonteCarlo:
         self.price = self._price()
 
     def _price(self):
-        self.stock_prices = np.zeros((self.sims, self.steps+1)) # each row is a path
+        self.stock_prices = np.zeros((self.sims, self.steps+1))  # each row is a path
         self.stock_prices[:, 0] = self.S0
-        
+
         # Generate stock prices
-        for t in range(1, self.steps+1): 
+        for t in range(1, self.steps+1):
             Z = norm.rvs(size=self.sims)
             self.stock_prices[:, t] = self.stock_prices[:, t-1] * np.exp(((self.r - self.q) - 0.5 * self.sigma**2) * self.dt + self.sigma * np.sqrt(self.dt) * Z)
 
