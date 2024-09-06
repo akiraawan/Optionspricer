@@ -24,7 +24,7 @@ class MonteCarloAmerican(MonteCarlo):
 
             # Degree 2 polynomial regression
             if len(X) > 0:
-                A = np.vstack([X**0, X, X**2]).T
+                A = np.vstack([np.ones_like(X), X, X**2]).T
                 coefficients = np.linalg.lstsq(A, Y, rcond=None)[0]
                 continuation_value = np.dot(A, coefficients)
 
@@ -32,6 +32,6 @@ class MonteCarloAmerican(MonteCarlo):
                 self.payoffs[t, is_profitable] = np.where(exercise, self.payoffs[t, is_profitable], self.payoffs[t + 1, is_profitable] * discount_factor)
 
         # Step 4: Discount the payoffs
-        option_price = np.mean(self.payoffs[1] * discount_factor)
+        option_price = np.mean(self.payoffs[1:] * discount_factor)
 
         return option_price

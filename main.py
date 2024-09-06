@@ -68,7 +68,7 @@ def compare(is_european):
     r = 0.05  # Risk-free interest rate
     sigma = 0.2  # Volatility of the underlying asset
     T = 365  # Time to maturity of the option specified in days
-    steps = 5
+    steps = 100
     sims = 100000
     q = 0.2  # Dividend yield of the underlying asset
 
