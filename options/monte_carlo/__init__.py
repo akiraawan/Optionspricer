@@ -1,1 +1,2 @@
 from .monte_carlo_european import MonteCarloEuropean
+from .monte_carlo_american import MonteCarloAmerican
