@@ -37,11 +37,10 @@ class MonteCarlo:
         self.option_type = option_type
         self.dt = self.T/steps
 
-        self.price = self.get_price()
+        self.price = self.__get_price()
 
-    def get_price(self):
-        self.calculate_price()
-        return np.mean(self.discounted_payoffs)
+    def __get_price(self):
+        return self.calculate_price()
 
     @abstractmethod
     def calculate_price(self):

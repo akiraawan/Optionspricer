@@ -16,3 +16,5 @@ class MonteCarloEuropean(MonteCarlo):
         self.payoffs = np.maximum(0, self.stock_prices[:, -1] - self.K) if (self.option_type == 'call') else np.maximum(0, self.K - self.stock_prices[:, -1])
 
         self.discounted_payoffs = np.exp(-self.r * self.T) * self.payoffs
+
+        return np.mean(self.discounted_payoffs)
