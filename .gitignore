@@ -166,3 +166,5 @@ cython_debug/
 Options_venv/
 
 notebooks/
+
+*.ipynb
