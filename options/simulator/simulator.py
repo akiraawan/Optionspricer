@@ -1,7 +1,7 @@
 
 
 class Simulator:
-    def __init__(self, option_type='call', initial_stock_price_range=(50, 150), strike_price_range=(50, 150), volatility_range=(0.1, 0.5), maturity_range=(0.1, 1), risk_free_rate_range=(0.01, 0.1), dividend_yield_range=(0, 0.1), num_samples=1000):
+    def __init__(self, option_type='call', initial_stock_price_range=(0, 150), strike_price_range=(50, 150), volatility_range=(0.1, 0.5), maturity_range=(0, 2), risk_free_rate_range=(0.01, 0.1), dividend_yield_range=(0, 0.1), num_samples=1000):
         self.option_type = option_type
         self.initial_stock_price_range = initial_stock_price_range
         self.strike_price_range = strike_price_range
