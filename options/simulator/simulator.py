@@ -12,7 +12,8 @@ class Simulator:
         self.num_samples = num_samples
 
     def simulate(self):
-        raise NotImplementedError("Subclasses should implement this method")
+        # Implement the simulation logic
+        pass
     
     def add_label(self):
         raise NotImplementedError("Subclasses should implement this method")
