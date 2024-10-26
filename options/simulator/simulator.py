@@ -10,10 +10,14 @@ class Simulator:
         self.risk_free_rate_range = risk_free_rate_range
         self.dividend_yield_range = dividend_yield_range
         self.num_samples = num_samples
+        self.df = self.simulate()
 
     def simulate(self):
         # Implement the simulation logic
-        pass
+
+        raise NotImplementedError
+    
+        return df # return the simulated data pd.DataFrame
     
     def add_label(self):
         raise NotImplementedError("Subclasses should implement this method")
