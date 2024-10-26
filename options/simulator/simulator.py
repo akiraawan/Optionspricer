@@ -17,12 +17,12 @@ class Simulator:
     def simulate(self):
 
         data = {
-            'S': self.__uniform(self.initial_stock_price_range, self.num_samples),
-            'K': self.__uniform(self.strike_price_range, self.num_samples),
-            'sigma': self.__uniform(self.volatility_range, self.num_samples),
-            'T': self.__uniform(self.maturity_range, self.num_samples),
-            'r': self.__uniform(self.risk_free_rate_range, self.num_samples),
-            'q': self.__uniform(self.dividend_yield_range, self.num_samples)
+            'S': self._uniform(self.initial_stock_price_range, self.num_samples),
+            'K': self._uniform(self.strike_price_range, self.num_samples),
+            'sigma': self._uniform(self.volatility_range, self.num_samples),
+            'T': self._uniform(self.maturity_range, self.num_samples),
+            'r': self._uniform(self.risk_free_rate_range, self.num_samples),
+            'q': self._uniform(self.dividend_yield_range, self.num_samples)
         }
 
         df = pd.DataFrame(data)
@@ -30,11 +30,11 @@ class Simulator:
         return df
 
     @staticmethod
-    def __uniform(tuple, num_samples):
+    def _uniform(tuple, num_samples):
         return np.random.uniform(tuple[0], tuple[1], num_samples)
 
     @staticmethod
-    def __normal(mean, std, num_samples):
+    def _normal(mean, std, num_samples):
         return np.random.normal(mean, std, num_samples)
 
     def add_label(self):
