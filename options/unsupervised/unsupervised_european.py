@@ -23,10 +23,11 @@ class EuropeanNN(nn.Module):
         )
 
     def forward(self, S, K, r, sigma, T, q):
-        inputs = torch.cat([S, K, r, sigma, T, q], dim=1) # bsx6
+        inputs = torch.cat([S, K, r, sigma, T, q], dim=1)  # bsx6
         # inputs is type df
         outputs = self.seq(inputs)
         return outputs
+
 
 def loss_fn(V, S, K, r, sigma, T, q, type='call'):
     L_PDE = 0.0
@@ -37,8 +38,8 @@ def loss_fn(V, S, K, r, sigma, T, q, type='call'):
     d2VdS2 = torch.autograd.grad(dVdS, S, grad_outputs=torch.ones_like(V), create_graph=True)[0]
 
     indices_Tg0 = np.where(T > 0)[0]
-    
-    S_Tg0 = S[indices_Tg0]  
+
+    S_Tg0 = S[indices_Tg0]
     K_Tg0 = K[indices_Tg0]
     r_Tg0 = r[indices_Tg0]
     sigma_Tg0 = sigma[indices_Tg0]
@@ -48,8 +49,7 @@ def loss_fn(V, S, K, r, sigma, T, q, type='call'):
     d2VdS2_Tg0 = d2VdS2[indices_Tg0]
     V_Tg0 = V[indices_Tg0]
 
-
-    L_PDE += torch.mean(torch.square(-dVdT_Tg0 + (r_Tg0 - q_Tg0) * S_Tg0 * dVdS_Tg0 + 0.5 * sigma_Tg0 ** 2 * S_Tg0 ** 2 * d2VdS2_Tg0 - r_Tg0 * V_Tg0)) # dv/dt + (r-q)s dv/ds + 0.5 sigma^2 s^2 d2v/ds2 - rV = 0
+    L_PDE += torch.mean(torch.square(-dVdT_Tg0 + (r_Tg0 - q_Tg0) * S_Tg0 * dVdS_Tg0 + 0.5 * sigma_Tg0 ** 2 * S_Tg0 ** 2 * d2VdS2_Tg0 - r_Tg0 * V_Tg0))  # dv/dt + (r-q)s dv/ds + 0.5 sigma^2 s^2 d2v/ds2 - rV = 0
 
     if type == 'call':
         L_BC += torch.mean(torch.square(V - torch.max(S - K * torch.exp(-r * T), torch.zeros_like(S))))
@@ -65,7 +65,7 @@ class CustomDataset(Dataset):
 
     def __len__(self):
         return len(self.df)
-    
+
     def __getitem__(self, idx):
         S = torch.tensor(self.dataframe.iloc[idx]['S'], dtype=torch.float32)
         K = torch.tensor(self.dataframe.iloc[idx]['K'], dtype=torch.float32)
@@ -76,10 +76,11 @@ class CustomDataset(Dataset):
 
         return S, K, r, sigma, T, q
 
+
 def train(model, simulator, n_iters=10000, batch_size=32, lr=0.001, device='cpu'):
     count = 0
     train_loss = []
-    train_df = simulator.df # access the simualted data
+    train_df = simulator.df  # access the simualted data
     option_type = simulator.option_type
 
     train_ds = CustomDataset(train_df)
@@ -106,14 +107,15 @@ def train(model, simulator, n_iters=10000, batch_size=32, lr=0.001, device='cpu'
 
     return train_loss
 
+
 def european_main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     simulator = SimulatorEuropean()
-    simulator.simulate() # will create a df in the df attribute that holds the data
+    simulator.simulate()  # will create a df in the df attribute that holds the data
     model = EuropeanNN()
 
     train_loss = train(model, simulator)
 
     model.eval()
-    
+
     # Test the model
