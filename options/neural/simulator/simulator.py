@@ -3,7 +3,7 @@ import pandas as pd
 
 
 class Simulator:
-    def __init__(self, option_type='call', initial_stock_price_range=(0, 150), strike_price_range=(50, 150), volatility_range=(0.1, 0.5), maturity_range=(0, 2), risk_free_rate_range=(0.01, 0.1), dividend_yield_range=(0, 0.1), num_samples=1000):
+    def __init__(self, option_type='call', initial_stock_price_range=(0, 150), strike_price_range=(50, 150), volatility_range=(0.1, 0.5), maturity_range=(0, 2), risk_free_rate_range=(0.01, 0.1), dividend_yield_range=(0, 0.1), num_samples=1000, create_label=False):
         self.option_type = option_type
         self.initial_stock_price_range = initial_stock_price_range
         self.strike_price_range = strike_price_range
@@ -12,21 +12,30 @@ class Simulator:
         self.risk_free_rate_range = risk_free_rate_range
         self.dividend_yield_range = dividend_yield_range
         self.num_samples = num_samples
-        self.df = self.simulate()
+        self.df = self.simulate(include_labels=create_label)
 
-    def simulate(self):
+    def simulate(self, include_labels: bool):
+        S = self._uniform(self.initial_stock_price_range, self.num_samples)
+        K = self._uniform(self.strike_price_range, self.num_samples)
+        sigma = self._uniform(self.volatility_range, self.num_samples)
+        T = self._uniform(self.maturity_range, self.num_samples)
+        r = self._uniform(self.risk_free_rate_range, self.num_samples)
+        q = self._uniform(self.dividend_yield_range, self.num_samples)
 
         data = {
-            'S': self._uniform(self.initial_stock_price_range, self.num_samples),
-            'K': self._uniform(self.strike_price_range, self.num_samples),
-            'sigma': self._uniform(self.volatility_range, self.num_samples),
-            'T': self._uniform(self.maturity_range, self.num_samples),
-            'r': self._uniform(self.risk_free_rate_range, self.num_samples),
-            'q': self._uniform(self.dividend_yield_range, self.num_samples)
+            'S': S,
+            'K': K,
+            'sigma': sigma,
+            'T': T,
+            'r': r,
+            'q': q,
         }
 
-        df = pd.DataFrame(data)
+        if include_labels:
+            label = self.generate_labels(S, K, sigma, T, r, q)
+            data['label'] = label
 
+        df = pd.DataFrame(data)
         return df
 
     @staticmethod
@@ -37,5 +46,5 @@ class Simulator:
     def _normal(mean, std, num_samples):
         return np.random.normal(mean, std, num_samples)
 
-    def add_label(self):
-        raise NotImplementedError("Subclasses should implement this method")
+    def generate_labels(self, S, K, sigma, T, r, q):
+        raise NotImplementedError(f"Not implemented in abstract class {type(self)}")

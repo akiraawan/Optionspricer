@@ -1,6 +1,7 @@
 from options import binomial_tree
 from options import black_scholes_merton
 from options import monte_carlo
+from options import neural
 
 
 def test_american_pricer():
@@ -83,5 +84,11 @@ def compare(is_european):
     print(monte.price)
 
 
+def test_simulator():
+    s = neural.SimulatorAmerican(create_label=True)
+    print(s.df.head())
+
+
 if __name__ == '__main__':
-    compare(is_european=False)
+    # compare(is_european=False)
+    test_simulator()
