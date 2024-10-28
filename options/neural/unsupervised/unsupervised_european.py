@@ -5,7 +5,7 @@ import torch.optim as optim
 import numpy as np
 import pandas as pd
 from torch.utils.data import Dataset, DataLoader
-from options.simulator import SimulatorEuropean
+from options.neural.simulator import SimulatorEuropean
 from sklearn.model_selection import train_test_split
 
 
@@ -13,7 +13,7 @@ class EuropeanNN(nn.Module):
     def __init__(self):
         super(EuropeanNN, self).__init__()
         self.seq = nn.Sequential(
-            nn.Linear(512, 512),
+            nn.Linear(6, 512),
             nn.Tanh(),
             nn.Dropout(0.2),
             nn.Linear(512, 512),
@@ -23,9 +23,10 @@ class EuropeanNN(nn.Module):
         )
 
     def forward(self, S, K, r, sigma, T, q):
+        S, K, r, sigma, T, q = S.unsqueeze(1), K.unsqueeze(1), r.unsqueeze(1), sigma.unsqueeze(1), T.unsqueeze(1), q.unsqueeze(1)
         inputs = torch.cat([S, K, r, sigma, T, q], dim=1)  # bsx6
         # inputs is type df
-        outputs = self.seq(inputs)
+        outputs = self.seq(inputs).squeeze(1).requires_grad_()
         return outputs
 
 
@@ -60,19 +61,19 @@ def loss_fn(V, S, K, r, sigma, T, q, type='call'):
 
 
 class CustomDataset(Dataset):
-    def __init__(self, dataframe):
-        self.dataframe = dataframe
+    def __init__(self, df):
+        self.df = df
 
     def __len__(self):
         return len(self.df)
 
     def __getitem__(self, idx):
-        S = torch.tensor(self.dataframe.iloc[idx]['S'], dtype=torch.float32)
-        K = torch.tensor(self.dataframe.iloc[idx]['K'], dtype=torch.float32)
-        r = torch.tensor(self.dataframe.iloc[idx]['r'], dtype=torch.float32)
-        sigma = torch.tensor(self.dataframe.iloc[idx]['sigma'], dtype=torch.float32)
-        T = torch.tensor(self.dataframe.iloc[idx]['T'], dtype=torch.float32)
-        q = torch.tensor(self.dataframe.iloc[idx]['q'], dtype=torch.float32)
+        S = torch.tensor(self.df.iloc[idx]['S'], dtype=torch.float32, requires_grad=True)
+        K = torch.tensor(self.df.iloc[idx]['K'], dtype=torch.float32, requires_grad=True)
+        r = torch.tensor(self.df.iloc[idx]['r'], dtype=torch.float32, requires_grad=True)
+        sigma = torch.tensor(self.df.iloc[idx]['sigma'], dtype=torch.float32, requires_grad=True)
+        T = torch.tensor(self.df.iloc[idx]['T'], dtype=torch.float32, requires_grad=True)
+        q = torch.tensor(self.df.iloc[idx]['q'], dtype=torch.float32, requires_grad=True)
 
         return S, K, r, sigma, T, q
 
@@ -91,7 +92,8 @@ def train(model, simulator, n_iters=10000, batch_size=32, lr=0.001, device='cpu'
     model.train()
     for epoch in range(epochs):
         for batch in train_dl:
-            S, K, r, sigma, T, q = [param.to(device) for param in batch]
+            # S, K, r, sigma, T, q = [param.to(device) for param in batch]
+            S, K, r, sigma, T, q = batch
             optimizer.zero_grad()
             V = model(S, K, r, sigma, T, q)
             loss = loss_fn(V, S, K, r, sigma, T, q, option_type)
@@ -111,7 +113,6 @@ def train(model, simulator, n_iters=10000, batch_size=32, lr=0.001, device='cpu'
 def european_main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     simulator = SimulatorEuropean()
-    simulator.simulate()  # will create a df in the df attribute that holds the data
     model = EuropeanNN()
 
     train_loss = train(model, simulator)
