@@ -1,1 +1,1 @@
-from .unsupervised_european import EuropeanNN
+from .unsupervised_european import European_Unsup_NN
