@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 
 class Simulator:
@@ -48,3 +49,6 @@ class Simulator:
 
     def generate_labels(self, S, K, sigma, T, r, q):
         raise NotImplementedError(f"Not implemented in abstract class {type(self)}")
+    
+    def split_data(self, test_size=0.2, random_state=42):
+        return train_test_split(self.df, test_size=test_size, random_state=random_state)
