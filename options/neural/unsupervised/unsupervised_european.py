@@ -6,19 +6,20 @@ import numpy as np
 import pandas as pd
 from torch.utils.data import Dataset, DataLoader
 from options.neural.simulator import SimulatorEuropean
-from sklearn.model_selection import train_test_split
 
 
-class EuropeanNN(nn.Module):
+class European_Unsup_NN(nn.Module):
     def __init__(self):
-        super(EuropeanNN, self).__init__()
+        super(European_Unsup_NN, self).__init__()
         self.seq = nn.Sequential(
             nn.Linear(6, 512),
             nn.Tanh(),
-            nn.Dropout(0.2),
             nn.Linear(512, 512),
             nn.Tanh(),
-            nn.Dropout(0.2),
+            nn.Linear(512, 512),
+            nn.Tanh(),
+            nn.Linear(512, 512),
+            nn.Tanh(),
             nn.Linear(512, 1)
         )
 
@@ -78,7 +79,7 @@ class CustomDataset(Dataset):
         return S, K, r, sigma, T, q
 
 
-def train(model, simulator, n_iters=10000, batch_size=32, lr=0.001, device='cpu'):
+def train(model, simulator, n_iters=10000, batch_size=32, lr=0.0001, device='cpu'):
     count = 0
     train_loss = []
     train_df = simulator.df  # access the simualted data
@@ -104,7 +105,7 @@ def train(model, simulator, n_iters=10000, batch_size=32, lr=0.001, device='cpu'
             count += 1
 
             if count % 100 == 0:
-                print(f'Epoch: {epoch}, Loss: {loss.item()}')
+                print(f'Epoch: {epoch}, Count: {count}, Loss: {loss.item()}')
                 train_loss.append(loss.item())
 
     return train_loss
@@ -113,10 +114,10 @@ def train(model, simulator, n_iters=10000, batch_size=32, lr=0.001, device='cpu'
 def european_main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     simulator = SimulatorEuropean()
-    model = EuropeanNN()
+    model = European_Unsup_NN()
 
     train_loss = train(model, simulator)
-
-    model.eval()
+    return train_loss
+    
 
     # Test the model
