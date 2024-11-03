@@ -69,12 +69,3 @@ def train(model, simulator, loss_fn=F.mse_loss, n_iters=10000, batch_size=32, lr
                 train_loss.append(loss.item())
 
     return train_loss
-
-def european_main():
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    simulator = SimulatorEuropean(create_label=True)
-    model = European_Sup_NN()
-
-    train_loss = train(model, simulator)
-    return train_loss
-    

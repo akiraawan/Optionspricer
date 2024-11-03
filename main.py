@@ -2,6 +2,8 @@ from options import binomial_tree
 from options import black_scholes_merton
 from options import monte_carlo
 from options import neural
+from options.neural.supervised import supervised_european
+from options.neural.unsupervised import unsupervised_european
 
 
 def test_american_pricer():
@@ -62,6 +64,17 @@ def test_monte_carlo():
     print(monte_eur.price)
     print(monte_ame.price)
 
+def test_supervised_european_neural_network():
+    simulator = supervised_european.SimulatorEuropean(create_label=True)
+    model = supervised_european.European_Sup_NN()
+    train_loss = supervised_european.train(model, simulator)
+    return model, train_loss
+
+def test_unsupervised_european_neural_network():
+    simulator = unsupervised_european.SimulatorEuropean()
+    model = unsupervised_european.European_Unsup_NN()
+    train_loss = unsupervised_european.train(model, simulator)
+    return model, train_loss
 
 def compare(is_european):
     S = 100.0  # Current price of the underlying asset
