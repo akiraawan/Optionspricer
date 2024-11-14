@@ -43,7 +43,7 @@ class CustomDataset(Dataset):
 def train(model, simulator, loss_fn=F.mse_loss, n_iters=10000, batch_size=32, lr=0.0001, device='cpu'):
     count = 0
     train_loss = []
-    train_df = simulator.split_data()[0]
+    train_df = simulator.split_data()[0] # For supervised learning, we only need the training data
     option_type = simulator.option_type
 
     train_ds = CustomDataset(train_df)
