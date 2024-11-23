@@ -82,7 +82,7 @@ class CustomDataset(Dataset):
 def train(model, simulator, n_iters=10000, batch_size=32, lr=0.0001, device='cpu'):
     count = 0
     train_loss = []
-    train_df = simulator.df  # access the simualted data
+    train_df = simulator.df  # For unsupervised, train data on whole dataset
     option_type = simulator.option_type
 
     train_ds = CustomDataset(train_df)
