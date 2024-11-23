@@ -237,7 +237,7 @@ $$
 
 So the only randomness in the equation is the Normal Random Variable $N(0, 1)$.
 
-Using the explicit formulae above, we can construct $\text{n\_sims}$ number of simulations, each with $\text{n\_steps}$ number of steps. 
+Using the explicit formulae above, we can construct $n_{sims}$ number of simulations, each with $n_{steps}$ number of steps. 
 
 ### Step 2: Calculate the discounted payoffs
 
@@ -251,7 +251,7 @@ $$
 
 ### Step 3: Find the Expectation of the discounted payoff
 
-Finally, to find the expectation of the discounted payoff, we can simply find the arithmetic mean of all $\text{n\_sims}$ discounted payoffs. This results in an approximate value for the price of an option:
+Finally, to find the expectation of the discounted payoff, we can simply find the arithmetic mean of all $n_{sims}$ discounted payoffs. This results in an approximate value for the price of an option:
 
 $$
 V = \mathbb{E}^\mathbb{Q}[e^{-(r-q)T}Y] 
