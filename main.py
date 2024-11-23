@@ -7,14 +7,14 @@ from options.neural.unsupervised import unsupervised_european
 
 
 def test_american_pricer():
-    S = 100.0  # Current price of the underlying asset
-    K = 110.0  # Strike price of the option
-    r = 0.05  # Risk-free interest rate
-    sigma = 0.2  # Volatility of the underlying asset
-    T = 365  # Time to maturity of the option specified in days
-    steps = 1000
+    S = 503.0  # Current price of the underlying asset
+    K = 450.0  # Strike price of the option
+    r = 0.035  # Risk-free interest rate
+    sigma = 0.22738  # Volatility of the underlying asset
+    T = 420  # Time to maturity of the option specified in days
+    steps = 10000
     q = 0.2  # Dividend yield of the underlying asset
-    bt = binomial_tree.BinomialTreeAmerican(S, K, r, T, sigma, steps, q, option_type='call')
+    bt = binomial_tree.BinomialTreeAmerican(S, K, r, T, sigma, steps, option_type='put')
     print(bt.price)
 
 
@@ -104,4 +104,4 @@ def test_simulator():
 
 if __name__ == '__main__':
     # compare(is_european=False)
-    test_simulator()
+    test_american_pricer()
